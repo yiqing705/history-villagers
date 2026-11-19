@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
+  <title id="title">蘇軾 Q 版造型提案</title>
+  <desc id="desc">以後世典藏畫像中的紗冠、白袍和竹杖為靈感的風格化人物圖像。</desc>
+  <defs>
+    <clipPath id="portrait"><circle cx="80" cy="80" r="76"/></clipPath>
+  </defs>
+  <circle cx="80" cy="80" r="78" fill="#e9d9b9"/>
+  <g clip-path="url(#portrait)">
+    <path d="M21 162c2-34 22-52 59-52s57 18 59 52" fill="#f7f3e9" stroke="#554c41" stroke-width="4"/>
+    <path d="m57 113 23 22 23-22 13 49H44Z" fill="#fffdf6" stroke="#554c41" stroke-width="4" stroke-linejoin="round"/>
+    <path d="m74 116 6 19-12 12m18-31-6 19 12 12" fill="none" stroke="#c7b99b" stroke-width="3"/>
+    <path d="M124 104 139 158" fill="none" stroke="#66805b" stroke-width="7" stroke-linecap="round"/>
+    <path d="M128 121h8m-5 17h9m-5 17h8" stroke="#d4c293" stroke-width="2"/>
+    <path d="M51 61c0-26 12-42 29-42s29 16 29 42v27c0 21-14 34-29 34S51 109 51 88Z" fill="#f0cda5" stroke="#554c41" stroke-width="4"/>
+    <path d="M49 59c1-28 13-43 32-43s31 15 32 43l-10-5-4-16c-10 6-26 7-40 3l-2 12Z" fill="#393b38" stroke="#554c41" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M54 33 34 28v-7l22 2m50 10 20-6v-7l-22 2" fill="#393b38" stroke="#554c41" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M63 66q7-6 14 0m7 0q7-6 14 0" fill="none" stroke="#554c41" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="69" cy="75" rx="2.5" ry="3.5" fill="#403b34"/>
+    <ellipse cx="91" cy="75" rx="2.5" ry="3.5" fill="#403b34"/>
+    <path d="M76 84q4 4 8 0" fill="none" stroke="#b87561" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M59 88q-3 23 21 25 24-2 21-25-7 5-15 3-7-2-13 0-7 2-14-3Z" fill="#f4eee1" stroke="#827a6b" stroke-width="2.5"/>
+    <path d="M77 98q3 3 6 0" fill="none" stroke="#554c41" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="58" cy="82" r="4" fill="#d88974" opacity=".55"/>
+    <circle cx="102" cy="82" r="4" fill="#d88974" opacity=".55"/>
+    <path d="M65 113v-7m30 7v-7" stroke="#554c41" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <circle cx="80" cy="80" r="76" fill="none" stroke="#fffaf0" stroke-width="4"/>
+</svg>
