@@ -41,6 +41,8 @@
 - [x] 確立題目需標明來源、附解析並符合學測範圍的原則。
 - [x] 定義第一版題目資料格式與來源標記，見 [`question-format.md`](question-format.md)。
 - [x] 完成單題答題回饋原型：錯答指出對應迷思並提供解題思路，答對則提供相關延伸。
+- [x] 定義居民人物檔案格式，並以有來源脈絡的蘇軾造型與對話提案示範，見 [`resident-profile-format.md`](resident-profile-format.md)。
+- [x] 記錄首段垂直切片居民名單與平台的推薦方案，見 [`decision.md`](decision.md)；建議可先以蘇軾單人原型驗證核心循環。
 
 ### 待完成項目
 
