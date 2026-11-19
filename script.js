@@ -64,3 +64,19 @@ function resetQuestion() {
 
 options.forEach((option) => option.addEventListener("click", answerQuestion));
 resetButton.addEventListener("click", resetQuestion);
+
+// 近況回應只在當次頁面互動中顯示，不寫入儲存空間。
+const dailyDialogue = document.querySelector(".daily-dialogue");
+const replyButtons = [...document.querySelectorAll(".reply-chips button")];
+const dailyReplies = {
+  happy: "聽起來今天有值得收藏的小亮光呢。謝謝你願意和我分享！",
+  tired: "辛苦了。累的時候就先歇一會兒吧，不用急著做任何事。",
+  listen: "那我說個小故事吧：我最近試著用新茶煮了一壺，發現慢慢等水滾也挺有意思。",
+  skip: "沒問題，我們就一起散散步，安靜地看看海也很好。",
+};
+
+replyButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    dailyDialogue.textContent = dailyReplies[button.dataset.response];
+  });
+});
