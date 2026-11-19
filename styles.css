@@ -3,3 +3,5 @@
 .portrait-su img,.tiny-avatar img{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%}
 
 .reply-chips button{padding:6px 9px;border:0;border-radius:20px;background:#f2f0e8;color:#73776e;font:inherit;font-size:9px;cursor:pointer;transition:background .2s,color .2s}.reply-chips button:hover{background:#dce6d8;color:#354d3b}.reply-chips button:focus-visible{outline:2px solid #48684e;outline-offset:2px}
+
+.show-solution{margin-top:4px;padding:7px 0;border:0;border-bottom:1px solid #b9c3b4;background:transparent;color:#48684e;font:inherit;font-size:10px;cursor:pointer}.show-solution:hover{color:#354d3b}.show-solution:focus-visible{outline:2px solid #48684e;outline-offset:3px}
