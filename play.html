@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#edf4e6" />
+    <meta name="description" content="走進拾史島，散步、拜訪居民，再到小店逛逛。" />
+    <title>走進小島｜拾史島</title>
+    <link rel="stylesheet" href="island-game.css" />
+    <script src="island-game.js" defer></script>
+  </head>
+  <body>
+    <main class="game-page">
+      <header class="game-header">
+        <a class="back-link" href="index.html">← 回到拾史島首頁</a>
+        <div><p class="eyebrow">一座正在長大的學習小島</p><h1>今天想去哪裡散步？</h1></div>
+        <p class="game-note">原型試玩・進度不會保存</p>
+      </header>
+
+      <section class="game-layout" aria-label="小島散步遊戲原型">
+        <div class="world-frame">
+          <canvas id="island" width="800" height="500" tabindex="0" aria-label="3D 小島場景。用方向鍵或 W A S D 移動，碰到居民或商店會停下；走近後按 E 互動。">
+            你的瀏覽器目前無法顯示小島地圖。你仍可以使用下方的商店按鈕。
+          </canvas>
+          <div class="map-hint" aria-hidden="true">3D 小島 <span>·</span> 方向鍵 / W A S D 移動 <span>·</span> 碰撞可繞行 <span>·</span> E 互動</div>
+        </div>
+        <aside class="game-panel">
+          <div class="resident-stamp" aria-hidden="true">✿</div>
+          <p class="panel-kicker">島上今天很舒服</p>
+          <h2>慢慢走，看看會遇見誰。</h2>
+          <p id="game-message" class="game-message" aria-live="polite">蘇軾和小禾正在島上散步。用方向鍵或 W A S D 移動，走近他們打聲招呼，或去海邊小店看看吧。</p>
+          <div class="game-stats"><span>🌰 <b id="coins">10</b> 枚橡實</span><span>🌼 <b id="flowers">0</b> 朵小花</span></div>
+          <button id="shop-button" class="shop-button" type="button">打開海邊小店</button>
+          <div id="shop-items" class="shop-items" hidden>
+            <p>店主今天準備了小花種子，每朵 5 枚橡實。</p>
+            <button id="buy-flower" type="button">買一朵小花・🌰 5</button>
+          </div>
+          <div class="touch-controls" aria-label="觸控移動控制">
+            <button type="button" data-move="up" aria-label="向上移動">↑</button>
+            <div><button type="button" data-move="left" aria-label="向左移動">←</button><button type="button" data-move="down" aria-label="向下移動">↓</button><button type="button" data-move="right" aria-label="向右移動">→</button></div>
+          </div>
+          <button id="interact-button" class="interact-button" type="button">打聲招呼 / 互動</button>
+          <p class="control-note">手機可用方向鈕移動，再按「打聲招呼 / 互動」和附近居民聊天；遇到居民或店屋時可沿著邊緣繞過。</p>
+        </aside>
+      </section>
+      <footer class="game-footer">目前是 WebGL 3D 散步原型：可操控角色、居民會自己漫步，碰撞時能沿邊繞行，商店可購買小花。島嶼裝飾與正式遊戲進度仍在規劃。</footer>
+    </main>
+  </body>
+</html>
