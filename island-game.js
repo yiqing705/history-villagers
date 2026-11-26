@@ -3,6 +3,7 @@ const gl = canvas.getContext("webgl", { antialias: true }) || canvas.getContext(
 const message = document.querySelector("#game-message");
 const coinsLabel = document.querySelector("#coins");
 const flowersLabel = document.querySelector("#flowers");
+const plantFlowerButton = document.querySelector("#plant-flower");
 const shopItems = document.querySelector("#shop-items");
 const residentQuiz = document.querySelector("#resident-quiz");
 const residentQuestion = document.querySelector("#resident-question");
@@ -30,10 +31,18 @@ const colliders = [
   ...[[-13,-8,1.1],[-12,6,.9],[-9,-8,.95],[-8,9,1.1],[11,8,1.1],[14,4,.9],[14,-8,1.1],[2,-9,.8],[-2,-9,.9]]
     .map(([x, z, size]) => ({ x, z, halfX: 0.2 * size, halfZ: 0.2 * size })),
 ];
+const acorns = [
+  { x: -14, z: -2, collected: false }, { x: -4.7, z: 5.3, collected: false },
+  { x: -1, z: 8, collected: false }, { x: 6, z: 7, collected: false },
+  { x: 12, z: 4, collected: false }, { x: 15, z: -5, collected: false },
+  { x: 5, z: -8, collected: false }, { x: -5, z: -8, collected: false },
+];
+const plantedFlowers = [];
 const CHARACTER_COLLISION_DISTANCE = 1.45;
 const WORLD_COLLISION_RADIUS = 0.48;
-let coins = 10;
+let coins = 0;
 let flowers = 0;
+let facing = { x: 1, z: 0 };
 let lastFrame = 0;
 let projection = new Float32Array(16);
 let view = new Float32Array(16);
@@ -219,6 +228,17 @@ function drawIsland() {
     draw(buffers.sphere, x + 0.1, 0.43, z, 0.22, 0.12, 0.18, [0.97,0.88,0.63]);
   });
 
+  acorns.filter((acorn) => !acorn.collected).forEach(({ x, z }) => {
+    draw(buffers.sphere, x, 0.3, z, 0.3, 0.34, 0.3, [0.58, 0.36, 0.18]);
+    draw(buffers.box, x, 0.48, z, 0.3, 0.1, 0.3, [0.78, 0.57, 0.31]);
+  });
+  plantedFlowers.forEach(({ x, z }, index) => {
+    draw(buffers.box, x, 0.34, z, 0.07, 0.58, 0.07, [0.3, 0.52, 0.3]);
+    const petalColor = index % 2 ? [0.94, 0.57, 0.55] : [0.98, 0.8, 0.39];
+    draw(buffers.sphere, x, 0.67, z, 0.23, 0.17, 0.23, petalColor);
+    draw(buffers.sphere, x, 0.69, z, 0.1, 0.1, 0.1, [0.96, 0.87, 0.56]);
+  });
+
   draw(buffers.box, shop.x, 0.8, shop.z, 3.7, 1.7, 2.8, [0.94, 0.79, 0.53]);
   draw(buffers.cone, shop.x, 2.15, shop.z, 4.3, 1.1, 3.4, [0.68, 0.36, 0.28]);
   draw(buffers.box, shop.x, 1.03, shop.z + 1.43, 0.78, 1.08, 0.08, [0.35,0.46,0.36]);
@@ -316,10 +336,42 @@ function updatePlayer(delta) {
   let dz = Number(keysDown.has("ArrowDown") || keysDown.has("s")) - Number(keysDown.has("ArrowUp") || keysDown.has("w"));
   if (!dx && !dz) return;
   const length = Math.hypot(dx, dz); dx /= length; dz /= length;
+  facing = { x: dx, z: dz };
   const moveX = Math.max(-16, Math.min(16, player.x + dx * player.speed * delta)) - player.x;
   const moveZ = Math.max(-11, Math.min(11, player.z + dz * player.speed * delta)) - player.z;
   moveWithoutPenetrating(player, moveX, moveZ);
+  collectNearbyAcorn();
   if (!shopItems.hidden && Math.hypot(player.x - shop.x, player.z - shop.z) > shop.radius + 1) shopItems.hidden = true;
+}
+
+function collectNearbyAcorn() {
+  const acorn = acorns.find((item) => !item.collected && Math.hypot(player.x - item.x, player.z - item.z) < 0.9);
+  if (!acorn) return;
+  acorn.collected = true;
+  coins += 2;
+  coinsLabel.textContent = String(coins);
+  message.textContent = "撿到 2 枚橡實！繼續散步找找看，也可以到海邊小店買花。";
+}
+
+function plantFlower() {
+  if (flowers < 1) {
+    message.textContent = "背包裡還沒有花苗，先到海邊小店買一朵吧。";
+    return;
+  }
+  const x = player.x + facing.x * 1.1;
+  const z = player.z + facing.z * 1.1;
+  const nearActor = Math.hypot(x - player.x, z - player.z) < 0.8 || residents.some((resident) => Math.hypot(x - resident.x, z - resident.z) < 0.85);
+  const nearObstacle = colliders.some((obstacle) => Math.abs(x - obstacle.x) < obstacle.halfX + 0.45 && Math.abs(z - obstacle.z) < obstacle.halfZ + 0.45);
+  const nearFlower = plantedFlowers.some((flower) => Math.hypot(x - flower.x, z - flower.z) < 0.75);
+  if (Math.abs(x) > 16 || Math.abs(z) > 11 || nearActor || nearObstacle || nearFlower) {
+    message.textContent = "這裡太靠近居民、樹木或房子了，走到空地再種花吧。";
+    return;
+  }
+  plantedFlowers.push({ x, z });
+  flowers -= 1;
+  flowersLabel.textContent = String(flowers);
+  plantFlowerButton.disabled = flowers < 1;
+  message.textContent = "花種好了！沿著小路散步，看看島上多了什麼顏色。";
 }
 
 function frame(timestamp) {
@@ -445,8 +497,10 @@ document.querySelector("#buy-flower").addEventListener("click", () => {
   if (coins < 5) { message.textContent = "橡實不太夠呢。再來逛逛時，說不定會有新的收集機會。"; return; }
   coins -= 5; flowers += 1;
   coinsLabel.textContent = String(coins); flowersLabel.textContent = String(flowers);
-  message.textContent = "買到一朵小花了！今天的島上又多了一點色彩。";
+  plantFlowerButton.disabled = false;
+  message.textContent = "買到一朵花苗了！走到空地，按「把花種在腳邊」布置小島。";
 });
+plantFlowerButton.addEventListener("click", plantFlower);
 
 if (!gl) {
   message.textContent = "這個瀏覽器目前沒有開啟 WebGL，暫時無法顯示 3D 小島。可以改用較新的瀏覽器再試一次。";

@@ -54,6 +54,9 @@ h1 { margin-bottom: 0; font-size: clamp(1.5rem, 3.4vw, 2.2rem); letter-spacing: 
 .shop-items p { color: #667363; font-size: .84rem; line-height: 1.6; }
 .shop-items button { color: #5b4b2b; background: #efd38f; }
 .shop-items button:hover { background: #e6c574; }
+.plant-button { width: 100%; min-height: 42px; margin-top: 9px; border: 1px solid #dce4d1; border-radius: 12px; color: #456348; background: #f5f8ef; font-weight: 700; cursor: pointer; }
+.plant-button:hover:not(:disabled) { background: #e5eedc; }
+.plant-button:disabled { color: #9aa294; background: #f3f3ee; cursor: not-allowed; }
 .touch-controls { display: grid; justify-items: center; gap: 5px; margin: 18px auto 9px; }
 .touch-controls div { display: flex; gap: 5px; }
 .touch-controls button { width: 44px; height: 40px; border: 1px solid #dce4d1; border-radius: 11px; color: #456348; background: #f5f8ef; font-size: 1.2rem; touch-action: none; }
