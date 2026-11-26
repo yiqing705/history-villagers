@@ -7,6 +7,7 @@
     <meta name="description" content="走進拾史島，散步、拜訪居民，再到小店逛逛。" />
     <title>走進小島｜拾史島</title>
     <link rel="stylesheet" href="island-game.css" />
+    <script src="question-data.js" defer></script>
     <script src="island-game.js" defer></script>
   </head>
   <body>
@@ -29,6 +30,14 @@
           <p class="panel-kicker">島上今天很舒服</p>
           <h2>慢慢走，看看會遇見誰。</h2>
           <p id="game-message" class="game-message" aria-live="polite">蘇軾和小禾正在島上散步。用方向鍵或 W A S D 移動，走近他們打聲招呼，或去海邊小店看看吧。</p>
+          <section id="resident-quiz" class="resident-quiz" aria-label="蘇軾的歷史散步題" hidden>
+            <div class="quiz-heading"><strong>蘇軾的散步題</strong><span>歷史・自編示範題</span></div>
+            <p id="resident-question" class="resident-question"></p>
+            <div id="resident-options" class="resident-options" role="group" aria-label="選擇答案"></div>
+            <p id="resident-feedback" class="resident-feedback" aria-live="polite">選一個你覺得最合適的答案吧。</p>
+            <button id="resident-solution" class="resident-solution" type="button" aria-expanded="false" hidden>看看完整解題思路 ↗</button>
+            <div class="quiz-actions"><button id="resident-reset" type="button" hidden>再想一次 ↻</button><button id="resident-close" type="button">先回去散步</button></div>
+          </section>
           <div class="game-stats"><span>🌰 <b id="coins">10</b> 枚橡實</span><span>🌼 <b id="flowers">0</b> 朵小花</span></div>
           <button id="shop-button" class="shop-button" type="button">打開海邊小店</button>
           <div id="shop-items" class="shop-items" hidden>

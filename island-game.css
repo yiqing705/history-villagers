@@ -23,6 +23,25 @@ h1 { margin-bottom: 0; font-size: clamp(1.5rem, 3.4vw, 2.2rem); letter-spacing: 
 .resident-stamp { position: absolute; top: 19px; right: 22px; display: grid; width: 40px; height: 40px; place-items: center; border-radius: 50%; color: #d7795c; background: #fff0dc; font-size: 1.45rem; }
 .game-panel h2 { max-width: 250px; margin-bottom: 12px; font-size: 1.35rem; line-height: 1.45; }
 .game-message { min-height: 98px; padding: 13px 14px; border-radius: 14px; color: #536553; background: #f2f5e9; font-size: .92rem; line-height: 1.8; }
+.resident-quiz { display: grid; gap: 10px; margin: -6px 0 15px; padding: 15px; border: 1px solid #e8dec3; border-radius: 16px; background: #fffaf0; }
+.resident-quiz[hidden], .resident-solution[hidden], .quiz-actions button[hidden] { display: none; }
+.quiz-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; color: #475d46; font-size: .85rem; }
+.quiz-heading span { color: #92805d; font-size: .72rem; }
+.resident-question { margin: 0; color: #3f5140; font-size: .86rem; font-weight: 600; line-height: 1.65; }
+.resident-options { display: grid; gap: 7px; }
+.resident-options button { display: flex; align-items: flex-start; gap: 8px; width: 100%; padding: 9px 10px; border: 1px solid #e7e3d3; border-radius: 10px; color: #52624f; background: #fff; text-align: left; font-size: .79rem; line-height: 1.5; cursor: pointer; }
+.resident-options button:hover:not(:disabled) { border-color: #8cac85; background: #f5f8ef; }
+.resident-options button:disabled { cursor: default; opacity: .78; }
+.resident-options button.correct { border-color: #6e9c70; background: #edf6e9; }
+.resident-options button.incorrect { border-color: #d88e7e; background: #fff0ea; }
+.option-letter { display: inline-grid; flex: 0 0 22px; width: 22px; height: 22px; place-items: center; border-radius: 50%; color: #57745a; background: #edf3e6; font-weight: 700; }
+.resident-feedback { margin: 0; color: #6a735f; font-size: .8rem; line-height: 1.7; }
+.resident-feedback.is-correct { color: #426c49; }
+.resident-feedback.is-incorrect { color: #855448; }
+.resident-solution { min-height: 38px; padding: 8px 10px; border: 1px solid #d8c89f; border-radius: 10px; color: #6c5b38; background: #fff4d8; font-size: .78rem; cursor: pointer; }
+.quiz-actions { display: flex; gap: 8px; }
+.quiz-actions button { flex: 1; min-height: 36px; border: 1px solid #dfe5d8; border-radius: 9px; color: #59705a; background: #f4f7ee; font-size: .78rem; cursor: pointer; }
+.quiz-actions button:hover { background: #e8f0df; }
 .game-stats { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; color: #61705c; font-size: .86rem; }
 .game-stats span { padding: 8px 10px; border-radius: 10px; background: #faf4e5; }
 .shop-button, .interact-button, .shop-items button { width: 100%; min-height: 46px; border: 0; border-radius: 13px; color: white; background: #52775b; font-weight: 700; cursor: pointer; }

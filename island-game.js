@@ -4,12 +4,19 @@ const message = document.querySelector("#game-message");
 const coinsLabel = document.querySelector("#coins");
 const flowersLabel = document.querySelector("#flowers");
 const shopItems = document.querySelector("#shop-items");
+const residentQuiz = document.querySelector("#resident-quiz");
+const residentQuestion = document.querySelector("#resident-question");
+const residentOptions = document.querySelector("#resident-options");
+const residentFeedback = document.querySelector("#resident-feedback");
+const residentSolution = document.querySelector("#resident-solution");
+const residentReset = document.querySelector("#resident-reset");
+const question = window.demoQuestion;
 const keysDown = new Set();
 
-const player = { x: 0, z: 8, speed: 5, color: [0.8, 0.42, 0.3], shirt: [0.94, 0.78, 0.53], name: "你" };
+const player = { x: -4.7, z: 2.8, speed: 5, color: [0.8, 0.42, 0.3], shirt: [0.94, 0.78, 0.53], name: "你" };
 const shop = { x: 8, z: -5, radius: 3.15 };
 const residents = [
-  { x: -5, z: 1.2, name: "蘇軾", speed: 1.05, color: [0.38, 0.44, 0.64], shirt: [0.94, 0.89, 0.77], tx: -5, tz: 1.2, wait: 1 },
+  { x: -5, z: 1.2, name: "蘇軾", speed: 1.05, color: [0.38, 0.44, 0.64], shirt: [0.94, 0.89, 0.77], tx: -5, tz: 1.2, wait: 3.5 },
   { x: 4, z: 2.3, name: "小禾", speed: 1.2, color: [0.68, 0.4, 0.28], shirt: [0.94, 0.79, 0.39], tx: 4, tz: 2.3, wait: 2 },
 ];
 const colliders = [
@@ -292,13 +299,77 @@ function interact() {
   }
   const nearest = residents.map((resident) => ({ resident, distance: Math.hypot(player.x - resident.x, player.z - resident.z) })).sort((a, b) => a.distance - b.distance)[0];
   if (nearest && nearest.distance < 1.75) {
-    message.textContent = nearest.resident.name === "蘇軾"
-      ? "蘇軾笑著說：「林間清風正好，散步時也能想起好多故事。」（遊戲創作對話）"
-      : "小禾說：「我剛剛在海邊看到一朵小花，你也去小店看看吧！」（遊戲創作對話）";
+    if (nearest.resident.name === "蘇軾") {
+      message.textContent = "蘇軾笑著說：「林間清風正好，散步時也能想起好多故事。」（遊戲創作對話）";
+      openResidentQuiz();
+    } else {
+      message.textContent = "小禾說：「我剛剛在海邊看到一朵小花，你也去小店看看吧！」（遊戲創作對話）";
+    }
   } else {
     message.textContent = "靠近居民或海邊小店，再按 E 就可以互動。";
   }
 }
+
+function resetResidentQuiz() {
+  residentQuestion.textContent = question.stem;
+  residentOptions.replaceChildren();
+  Object.entries(question.options).forEach(([key, text]) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.answer = key;
+    const letter = document.createElement("span");
+    letter.className = "option-letter";
+    letter.textContent = key.toUpperCase();
+    const label = document.createElement("span");
+    label.textContent = text;
+    button.append(letter, label);
+    button.addEventListener("click", answerResidentQuestion);
+    residentOptions.append(button);
+  });
+  residentFeedback.textContent = "選一個你覺得最合適的答案吧。";
+  residentFeedback.className = "resident-feedback";
+  residentSolution.hidden = true;
+  residentSolution.setAttribute("aria-expanded", "false");
+  residentSolution.textContent = "看看完整解題思路 ↗";
+  residentReset.hidden = true;
+}
+
+function openResidentQuiz() {
+  resetResidentQuiz();
+  residentQuiz.hidden = false;
+}
+
+function answerResidentQuestion(event) {
+  const selected = event.currentTarget.dataset.answer;
+  const correct = selected === question.answer;
+  residentOptions.querySelectorAll("button").forEach((button) => { button.disabled = true; });
+  event.currentTarget.classList.add(correct ? "correct" : "incorrect");
+  residentReset.hidden = false;
+  if (correct) {
+    residentFeedback.textContent = `答對了！${question.solution} ${question.extension}`;
+    residentFeedback.className = "resident-feedback is-correct";
+    return;
+  }
+  residentFeedback.textContent = question.distractors[selected];
+  residentFeedback.className = "resident-feedback is-incorrect";
+  residentSolution.hidden = false;
+  residentSolution.dataset.hint = question.distractors[selected];
+}
+
+residentSolution.addEventListener("click", () => {
+  const expanded = residentSolution.getAttribute("aria-expanded") === "true";
+  if (expanded) {
+    residentFeedback.textContent = residentSolution.dataset.hint;
+    residentSolution.setAttribute("aria-expanded", "false");
+    residentSolution.textContent = "看看完整解題思路 ↗";
+    return;
+  }
+  residentFeedback.textContent = `${residentSolution.dataset.hint} 解題思路：${question.solution} 正確選項是「${question.options[question.answer]}」`;
+  residentSolution.setAttribute("aria-expanded", "true");
+  residentSolution.textContent = "收起完整解題思路 ↑";
+});
+residentReset.addEventListener("click", resetResidentQuiz);
+document.querySelector("#resident-close").addEventListener("click", () => { residentQuiz.hidden = true; });
 
 function setDirection(direction, active) {
   const keyByDirection = { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" };
