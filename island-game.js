@@ -10,14 +10,20 @@ const residentOptions = document.querySelector("#resident-options");
 const residentFeedback = document.querySelector("#resident-feedback");
 const residentSolution = document.querySelector("#resident-solution");
 const residentReset = document.querySelector("#resident-reset");
+const worldLabels = document.querySelector("#world-labels");
 const question = window.demoQuestion;
 const keysDown = new Set();
 
 const player = { x: -4.7, z: 2.8, speed: 5, color: [0.8, 0.42, 0.3], shirt: [0.94, 0.78, 0.53], name: "你" };
 const shop = { x: 8, z: -5, radius: 3.15 };
 const residents = [
-  { x: -5, z: 1.2, name: "蘇軾", speed: 1.05, color: [0.38, 0.44, 0.64], shirt: [0.94, 0.89, 0.77], tx: -5, tz: 1.2, wait: 3.5 },
-  { x: 4, z: 2.3, name: "小禾", speed: 1.2, color: [0.68, 0.4, 0.28], shirt: [0.94, 0.79, 0.39], tx: 4, tz: 2.3, wait: 2 },
+  { id: "su-shi", x: -5, z: 1.2, name: "蘇軾", speed: 1.05, color: [0.38, 0.44, 0.64], shirt: [0.94, 0.89, 0.77], tx: -5, tz: 1.2, wait: 3.5, greeting: "林間清風正好，散步時也能想起好多故事。" },
+  { id: "xiao-he", x: 4, z: 2.3, name: "小禾", speed: 1.2, color: [0.68, 0.4, 0.28], shirt: [0.94, 0.79, 0.39], tx: 4, tz: 2.3, wait: 2, greeting: "我剛剛在海邊看到一朵小花，你也去小店看看吧！" },
+  { id: "sima-qian", x: -13, z: -3, name: "司馬遷", speed: 0.9, color: [0.54, 0.42, 0.31], shirt: [0.84, 0.75, 0.57], tx: -13, tz: -3, wait: 2.4, greeting: "讀到一段記載時，先看看它留下了什麼線索。" },
+  { id: "galileo-galilei", x: -11, z: 4, name: "伽利略", speed: 1.0, color: [0.47, 0.52, 0.65], shirt: [0.78, 0.82, 0.86], tx: -11, tz: 4, wait: 2.8, greeting: "先想想可以量些什麼，再看看結果怎麼說。" },
+  { id: "antoine-lavoisier", x: -9, z: -6, name: "拉瓦節", speed: 0.85, color: [0.63, 0.42, 0.35], shirt: [0.87, 0.85, 0.77], tx: -9, tz: -6, wait: 3.1, greeting: "把反應前後的觀察都記下來吧。" },
+  { id: "gregor-mendel", x: 3, z: -6, name: "孟德爾", speed: 0.9, color: [0.5, 0.48, 0.37], shirt: [0.78, 0.76, 0.62], tx: 3, tz: -6, wait: 3.3, greeting: "慢慢記下每次觀察，規律就會浮現。" },
+  { id: "alfred-wegener", x: 13, z: -2, name: "魏格納", speed: 1.0, color: [0.36, 0.5, 0.57], shirt: [0.76, 0.82, 0.75], tx: 13, tz: -2, wait: 3.6, greeting: "把不同線索放在同一張圖上看看吧。" },
 ];
 const colliders = [
   { x: shop.x, z: shop.z, halfX: 1.95, halfZ: 1.5 },
@@ -222,6 +228,41 @@ function drawIsland() {
 
   residents.forEach((resident) => drawCharacter(resident));
   drawCharacter(player, true);
+  updateWorldLabels();
+}
+
+function createWorldLabels() {
+  residents.forEach((resident) => {
+    const label = document.createElement("span");
+    label.className = "world-label";
+    label.textContent = resident.name;
+    worldLabels.append(label);
+    resident.labelElement = label;
+  });
+}
+
+function updateWorldLabels() {
+  const canvasRect = canvas.getBoundingClientRect();
+  const frameRect = canvas.parentElement.getBoundingClientRect();
+  const width = canvasRect.width;
+  const height = canvasRect.height;
+  residents.forEach((resident) => {
+    const x = resident.x;
+    const y = 2.45;
+    const z = resident.z;
+    const viewX = view[0] * x + view[4] * y + view[8] * z + view[12];
+    const viewY = view[1] * x + view[5] * y + view[9] * z + view[13];
+    const viewZ = view[2] * x + view[6] * y + view[10] * z + view[14];
+    const clipX = projection[0] * viewX + projection[4] * viewY + projection[8] * viewZ + projection[12];
+    const clipY = projection[1] * viewX + projection[5] * viewY + projection[9] * viewZ + projection[13];
+    const clipW = projection[3] * viewX + projection[7] * viewY + projection[11] * viewZ + projection[15];
+    if (clipW <= 0) { resident.labelElement.hidden = true; return; }
+    const screenX = (clipX / clipW + 1) * 0.5 * width;
+    const screenY = (1 - clipY / clipW) * 0.5 * height;
+    resident.labelElement.hidden = screenX < -40 || screenX > width + 40 || screenY < -30 || screenY > height + 20;
+    resident.labelElement.style.left = `${canvasRect.left - frameRect.left + screenX}px`;
+    resident.labelElement.style.top = `${canvasRect.top - frameRect.top + screenY}px`;
+  });
 }
 
 function resize() {
@@ -300,10 +341,10 @@ function interact() {
   const nearest = residents.map((resident) => ({ resident, distance: Math.hypot(player.x - resident.x, player.z - resident.z) })).sort((a, b) => a.distance - b.distance)[0];
   if (nearest && nearest.distance < 1.75) {
     if (nearest.resident.name === "蘇軾") {
-      message.textContent = "蘇軾笑著說：「林間清風正好，散步時也能想起好多故事。」（遊戲創作對話）";
+      message.textContent = `${nearest.resident.name}笑著說：「${nearest.resident.greeting}」（遊戲創作對話）`;
       openResidentQuiz();
     } else {
-      message.textContent = "小禾說：「我剛剛在海邊看到一朵小花，你也去小店看看吧！」（遊戲創作對話）";
+      message.textContent = `${nearest.resident.name}和你打招呼：「${nearest.resident.greeting}」（遊戲創作對話；候選知識主題待審。）`;
     }
   } else {
     message.textContent = "靠近居民或海邊小店，再按 E 就可以互動。";
@@ -420,6 +461,7 @@ if (!gl) {
       normalScale: gl.getUniformLocation(program, "uNormalScale"),
     };
     buffers = { box: makeBox(), sphere: makeSphere(), cone: makeCone() };
+    createWorldLabels();
     gl.enable(gl.DEPTH_TEST);
     resize();
     requestAnimationFrame(frame);

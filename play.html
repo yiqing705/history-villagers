@@ -21,15 +21,17 @@
       <section class="game-layout" aria-label="小島散步遊戲原型">
         <div class="world-frame">
           <canvas id="island" width="800" height="500" tabindex="0" aria-label="3D 小島場景。用方向鍵或 W A S D 移動，碰到居民或商店會停下；走近後按 E 互動。">
-            你的瀏覽器目前無法顯示小島地圖。你仍可以使用下方的商店按鈕。
+            你的瀏覽器目前無法顯示 3D 小島。你仍可以使用下方的商店按鈕。
           </canvas>
+          <div id="world-labels" class="world-labels" aria-hidden="true"></div>
           <div class="map-hint" aria-hidden="true">3D 小島 <span>·</span> 方向鍵 / W A S D 移動 <span>·</span> 碰撞可繞行 <span>·</span> E 互動</div>
         </div>
         <aside class="game-panel">
           <div class="resident-stamp" aria-hidden="true">✿</div>
           <p class="panel-kicker">島上今天很舒服</p>
           <h2>慢慢走，看看會遇見誰。</h2>
-          <p id="game-message" class="game-message" aria-live="polite">蘇軾和小禾正在島上散步。用方向鍵或 W A S D 移動，走近他們打聲招呼，或去海邊小店看看吧。</p>
+          <p id="game-message" class="game-message" aria-live="polite">蘇軾和幾位新朋友正在島上散步。走近居民按 E，或到北側小店逛逛吧。</p>
+          <p class="prototype-note">其他居民目前是候選角色展示，聊天台詞為創作；只有蘇軾接有自編示範題，內容尚待學科審核。</p>
           <section id="resident-quiz" class="resident-quiz" aria-label="蘇軾的歷史散步題" hidden>
             <div class="quiz-heading"><strong>蘇軾的散步題</strong><span>歷史・自編示範題</span></div>
             <p id="resident-question" class="resident-question"></p>
@@ -52,7 +54,7 @@
           <p class="control-note">手機可用方向鈕移動，再按「打聲招呼 / 互動」和附近居民聊天；遇到居民或店屋時可沿著邊緣繞過。</p>
         </aside>
       </section>
-      <footer class="game-footer">目前是 WebGL 3D 散步原型：可操控角色、居民會自己漫步，碰撞時能沿邊繞行，商店可購買小花。島嶼裝飾與正式遊戲進度仍在規劃。</footer>
+      <footer class="game-footer">目前是 WebGL 3D 散步原型：可操控角色、七位居民會自己漫步，碰撞時能沿邊繞行，商店可購買小花。島嶼裝飾與正式遊戲進度仍在規劃。</footer>
     </main>
   </body>
 </html>
