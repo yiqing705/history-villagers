@@ -4,6 +4,7 @@ window.demoQuestion = {
   resident: "蘇軾",
   subject: "歷史",
   source: { type: "自編示範題", reference: null },
+  reviewStatus: "提案；待歷史教師審查",
   scope: ["中國史", "宋代", "政治制度"],
   keyPoint: "科舉制度以考試選拔士人，提供入仕管道。",
   stem: "北宋時期，哪一項最能說明「科舉制度」對士人生活的影響？",
